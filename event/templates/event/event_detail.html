@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="background-container">
+    <img src="{% static 'images/events/BG4.jpg' %}" alt="Background Image" class="background-image">
+</div>
+
+<div class="event-detail-container">
+    <div class="event-detail glassmorphism">
+        <h2 class="event-title">{{ event.title }}</h2>
+        <div class="event-info">
+            <p class="event-description">{{ event.description }}</p>
+            <p class="event-location">Ubicación: {{ event.location }}</p>
+            <p class="event-date">Fecha: {{ event.date }}</p>
+            <p class="event-rating">Rating promedio: {{ event.rating }}</p>
+        </div>
+        <div class="event-images">
+            <img src="{{ event.ticket_image.url }}" alt="Ticket" class="event-image">
+            <img src="{{ event.poster_image.url }}" alt="Poster" class="event-image">
+            <img src="{{ event.flyer_image.url }}" alt="Flyer" class="event-image">
+        </div>
+
+        <div class="comments-section">
+            <h3 class="comments-title">Comentarios</h3>
+            {% for comment in comments %}
+                <div class="comment">
+                    <p class="comment-author"><strong>{{ comment.author }}:</strong> {{ comment.rating }} estrellas</p>
+                    <p class="comment-message">{{ comment.message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+                <!-- Botón para redirigir a la página principal (core) -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'core' %}" class="back-to-core-btn">Volver a la página principal</a>
+        </div>  
+
+        <div class="add-comment-section">
+            <h3 class="add-comment-title">Añadir comentario</h3>
+            <form method="post" class="comment-form">
+                {% csrf_token %}
+                {% for field in comment_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    <div class="form-field-container">
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small class="form-help-text">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% for error in field.errors %}
+                    <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="submit-btn">Agregar Comentario</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #2b1055, #7597de);
+        z-index: -2;
+    }
+
+    .background-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    .event-detail-container {
+        min-height: calc(100vh - 100px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+    }
+
+    .event-detail {
+        width: 100%;
+        max-width: 800px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        color: #fff;
+    }
+
+    .event-title {
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .event-info p {
+        margin-bottom: 10px;
+    }
+
+    .event-images {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .event-image {
+        width: 30%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .comments-section, .add-comment-section {
+        margin-top: 40px;
+    }
+
+    .comments-title, .add-comment-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .comment {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .comment-author {
+        margin-bottom: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .form-field-container input,
+    .form-field-container textarea {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .form-help-text {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 5px;
+    }
+
+    .form-error {
+        color: #ff6b6b;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background: #45a049;
+    }
+
+    @media (max-width: 768px) {
+        .event-detail {
+            padding: 30px 20px;
+        }
+
+        .event-title {
+            font-size: 28px;
+        }
+
+        .event-image {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

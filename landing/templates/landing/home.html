@@ -1,132 +1,48 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% load static %} 
+{% load static %}
 
 {% block title %}Home{% endblock title %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'css/landing/home.css' %}"/>
 <link rel="stylesheet" href="{% static 'css/global/base.css' %}"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="{% static 'css/landing/home.css' %}"/>
 {% endblock styles %} 
 
 {% block content %}
-<div class="carousel">
-  <!-- list item -->
-  <div class="list">
-    <div class="item">
-      <img src="{% static 'images/events/BG1.png' %}">
-      <div class="glass-container">
-        <div class="content">
-          <div class="author">WORKSPHERE</div>
-          <div class="title">DISCOVER, MANAGE AND ASSIST TO EVENTS</div>
-          <div class="topic">TECHNOLOGY</div>
-          <div class="des">
-            <!-- lorem 50 -->
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?
-          </div>
-          <div class="buttons">
-            <button>SEE MORE</button>
-            <button>SIGN UP</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <img src="{% static 'images/events/BG2.jpg' %}">
-      <div class="glass-container">
-        <div class="content">
-          <div class="author">WORKSPHERE</div>
-          <div class="title">DISCOVER, MANAGE AND ASSIST TO EVENTS</div>
-          <div class="topic">TECHNOLOGY</div>
-          <div class="des">
-            <!-- lorem 50 -->
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?
-          </div>
-          <div class="buttons">
-            <button>SEE MORE</button>
-            <button>SIGN UP</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <img src="{% static 'images/events/BG3.jpg' %}">
-      <div class="glass-container">
-        <div class="content">
-          <div class="author">WORKSPHERE</div>
-          <div class="title">DISCOVER, MANAGE AND ASSIST TO EVENTS</div>
-          <div class="topic">TECHNOLOGY</div>
-          <div class="des">
-            <!-- lorem 50 -->
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?
-          </div>
-          <div class="buttons">
-            <button>SEE MORE</button>
-            <button>SIGN UP</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <img src="{% static 'images/events/BG4.jpg' %}">
-      <div class="glass-container">
-        <div class="content">
-          <div class="author">WORKSPHERE</div>
-          <div class="title">DISCOVER, MANAGE AND ASSIST TO EVENTS</div>
-          <div class="topic">TECHNOLOGY</div>
-          <div class="des">
-            <!-- lorem 50 -->
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?
-          </div>
-          <div class="buttons">
-            <button>SEE MORE</button>
-            <button>SIGN UP</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- list thumnail -->
-  <div class="thumbnail">
-    <div class="item">
-      <img src="{% static 'images/events/evento_1/Evento1Vert.png' %}">
-      <div class="content">
-        <div class="title">Evento 1</div>
-        <div class="description">Inscribite al evento</div>
-      </div>
-    </div>
-    <div class="item">
-      <img src="{% static 'images/events/evento_2/Evento2Vert.png' %}">
-      <div class="content">
-        <div class="title">Evento 2</div>
-        <div class="description">Inscribite al evento</div>
-      </div>
-    </div>
-    <div class="item">
-      <img src="{% static 'images/events/evento_3/Evento3Vert.png' %}">
-      <div class="content">
-        <div class="title">Evento 3</div>
-        <div class="description">Inscribite al evento</div>
-      </div>
-    </div>
-    <div class="item">
-      <img src="{% static 'images/events/evento_4/Evento4Vert.png' %}">
-      <div class="content">
-        <div class="title">Evento 4</div>
-        <div class="description">Inscribite al evento</div>
-      </div>
-    </div>
-  </div>
+<div class="background-container">
+  <img src="{% static 'images/events/BG4.jpg' %}" alt="Background Image" class="background-image">
+</div>
 
-  <!-- next prev -->
-  <div class="arrows">
-      <button id="prev"><</button>
-      <button id="next">></button>
+<div class="landing-info glassmorphism">
+  <h1 class="landing-title">WorkSphere</h1>
+    <p class="landing-subtitle">Connect, Grow, and Succeed</p> <!-- Subtítulo adicional -->
+    <p class="landing-description">Discover upcoming work events and expand your professional network.</p>
+    <ul class="landing-benefits">
+      <li>Stay updated on industry events</li>
+      <li>Expand your professional connections</li>
+      <li>Access exclusive resources</li>
+    </ul>
+    <a href="{% url 'register' %}" class="sign-up-button">Sign Up</a>
+</div>
+
+<div class="invisible-container">
+  <div class="carousel-container">
+      <div class="main-image">
+          <img src="{% static 'images/events/evento_1/Evento1Horz.png' %}" alt="Imagen principal del Evento 1" id="mainImage">
+      </div>
+      <div class="preview-container">
+          <button class="nav-button prev" aria-label="Evento anterior">&lt;</button>
+          <div class="preview-scroll">
+              <img src="{% static 'images/events/evento_1/Evento1Vert.png' %}" alt="Vista previa del Evento 1" class="preview-image active" data-main="{% static 'images/events/evento_1/Evento1Horz.png' %}">
+              <img src="{% static 'images/events/evento_2/Evento2Vert.png' %}" alt="Vista previa del Evento 2" class="preview-image" data-main="{% static 'images/events/evento_2/Evento2Horz.png' %}">
+              <img src="{% static 'images/events/evento_3/Evento3Vert.png' %}" alt="Vista previa del Evento 3" class="preview-image" data-main="{% static 'images/events/evento_3/Evento3Horz.png' %}">
+              <img src="{% static 'images/events/evento_4/Evento4Vert.png' %}" alt="Vista previa del Evento 4" class="preview-image" data-main="{% static 'images/events/evento_4/Evento4Horz.png' %}">
+              <img src="{% static 'images/events/evento_5/Evento5Vert.png' %}" alt="Vista previa del Evento 5" class="preview-image" data-main="{% static 'images/events/evento_5/Evento5Horz.png' %}">
+          </div>
+          <button class="nav-button next" aria-label="Evento siguiente">&gt;</button>
+      </div>
   </div>
-  <!-- time running -->
-  <div class="time"></div>
 </div>
 {% endblock content %}
 

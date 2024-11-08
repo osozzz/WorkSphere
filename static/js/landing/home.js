@@ -1,49 +1,37 @@
-//step 1: get DOM
-let nextDom = document.getElementById('next');
-let prevDom = document.getElementById('prev');
+document.addEventListener('DOMContentLoaded', () => {
+    const mainImage = document.getElementById('mainImage');
+    const previewImages = document.querySelectorAll('.preview-image');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+    const previewScroll = document.querySelector('.preview-scroll');
 
-let carouselDom = document.querySelector('.carousel');
-let SliderDom = carouselDom.querySelector('.carousel .list');
-let thumbnailBorderDom = document.querySelector('.carousel .thumbnail');
-let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll('.item');
-let timeDom = document.querySelector('.carousel .time');
+    let currentIndex = 0;
 
-thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
-let timeRunning = 7000;
-let timeAutoNext = 8000;
-
-nextDom.onclick = function(){
-    showSlider('next');    
-}
-
-prevDom.onclick = function(){
-    showSlider('prev');    
-}
-let runTimeOut;
-let runNextAuto = setTimeout(() => {
-    next.click();
-}, timeAutoNext)
-function showSlider(type){
-    let  SliderItemsDom = SliderDom.querySelectorAll('.carousel .list .item');
-    let thumbnailItemsDom = document.querySelectorAll('.carousel .thumbnail .item');
-    
-    if(type === 'next'){
-        SliderDom.appendChild(SliderItemsDom[0]);
-        thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
-        carouselDom.classList.add('next');
-    }else{
-        SliderDom.prepend(SliderItemsDom[SliderItemsDom.length - 1]);
-        thumbnailBorderDom.prepend(thumbnailItemsDom[thumbnailItemsDom.length - 1]);
-        carouselDom.classList.add('prev');
+    function updateMainImage(index) {
+        const selectedPreview = previewImages[index];
+        mainImage.src = selectedPreview.getAttribute('data-main');
+        mainImage.alt = selectedPreview.alt.replace('Vista previa del', 'Imagen principal del');
+        previewImages.forEach(img => img.classList.remove('active'));
+        selectedPreview.classList.add('active');
+        currentIndex = index;
     }
-    clearTimeout(runTimeOut);
-    runTimeOut = setTimeout(() => {
-        carouselDom.classList.remove('next');
-        carouselDom.classList.remove('prev');
-    }, timeRunning);
 
-    clearTimeout(runNextAuto);
-    runNextAuto = setTimeout(() => {
-        next.click();
-    }, timeAutoNext)
-}
+    previewImages.forEach((img, index) => {
+        img.addEventListener('click', () => updateMainImage(index));
+    });
+
+    prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + previewImages.length) % previewImages.length;
+        updateMainImage(currentIndex);
+        previewScroll.scrollLeft -= 90;
+    });
+
+    nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % previewImages.length;
+        updateMainImage(currentIndex);
+        previewScroll.scrollLeft += 90;
+    });
+
+    // Inicializar con la primera imagen
+    updateMainImage(0);
+});

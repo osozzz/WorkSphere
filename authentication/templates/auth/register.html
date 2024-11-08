@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/global/base.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/auth/auth.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+<div class="background-container">
+  <img src="{% static 'images/events/BG4.jpg' %}" alt="Background Image" class="background-image">
+</div>
+
+<div class="auth-container">
+  <div class="auth-form glassmorphism">
+    <h2 class="auth-title">Join WorkSphere</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" id="registerForm">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="auth-button">Register</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/global/base.js' %}"></script>
+<script src="{% static 'js/auth/auth.js' %}"></script>
+{% endblock scripts %}

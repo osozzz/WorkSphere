@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Core{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/global/base.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/core/core.css' %}"/>
+{% endblock styles %}
+
+{% block content %}
+<div class="layout-container">
+  <!-- Left Sidebar -->
+  <nav class="sidebar">
+    <a href="{% url 'home' %}" class="sidebar-item active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="{% url 'create_event' %}" class="sidebar-item">
+      <i class="fas fa-calendar"></i>
+      <span>Create Event</span>
+    </a>
+    <a href="{% url 'home' %}" class="sidebar-item">
+      <i class="fas fa-envelope"></i>
+      <span>Messages</span>
+    </a>
+    <a href="{% url 'home' %}" class="sidebar-item">
+      <i class="fas fa-bookmark"></i>
+      <span>Saved</span>
+    </a>
+    <a href="{% url 'home' %}" class="sidebar-item">
+      <i class="fas fa-users"></i>
+      <span>Communities</span>
+    </a>
+    <div class="sidebar-footer">
+      <a href="{% url 'home' %}" class="sidebar-item">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+      <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="sidebar-item" style="background: none; border: none; padding: 0; cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Create Post Section -->
+    <div class="create-post glassmorphism">
+      <img src="{% static 'images/avatar.png' %}" alt="User Avatar" class="user-avatar">
+      <a href="{% url 'create_event' %}" class="post-input">Create a new event...</a>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed">
+      {% if events %}
+        {% for event in events %}
+          <div class="post glassmorphism">
+            <div class="post-header">
+              <img src="{% static 'images/avatar.png' %}" alt="User Avatar" class="user-avatar">
+              <div class="post-info">
+                <h3>{{ event.title }}</h3>
+                <span class="post-time">{{ event.created_at|timesince }} ago</span>
+              </div>
+            </div>
+            <p class="post-content">{{ event.description|truncatewords:30 }}</p>
+            {% if event.poster_image %}
+              <div class="post-image">
+                <img src="{{ event.poster_image.url }}" alt="{{ event.title }} Poster">
+              </div>
+            {% endif %}
+            <div class="post-details">
+              <p><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+              <p><i class="far fa-calendar-alt"></i> {{ event.date|date:"F d, Y" }}</p>
+            </div>
+            <div class="post-actions">
+              <a href="{% url 'event_detail' event.id %}" class="action-btn">
+                <i class="far fa-eye"></i>
+                View Details
+              </a>
+              <button class="action-btn">
+                <i class="far fa-calendar-check"></i>
+                Interested
+              </button>
+              <button class="action-btn">
+                <i class="far fa-bookmark"></i>
+                Save
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+          <div class="pagination">
+            {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">&laquo; Previous</a>
+            {% endif %}
+            
+            <span class="current-page">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">Next &raquo;</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="no-events">No events have been created yet. Be the first to <a href="{% url 'create_event' %}">create an event</a>!</p>
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar">
+    <!-- Trending Events -->
+    <div class="trending-events glassmorphism">
+      <h3>Trending Events</h3>
+      <div class="event-list">
+        {% for event in trending_events|slice:":3" %}
+          <div class="trending-event">
+            {% if event.poster_image %}
+              <img src="{{ event.poster_image.url }}" alt="{{ event.title }} Thumbnail">
+            {% else %}
+              <img src="{% static 'images/event-thumbnail.jpg' %}" alt="Event Thumbnail">
+            {% endif %}
+            <div class="event-info">
+              <h4>{{ event.title }}</h4>
+              <span>{{ event.interested_count }} interested</span>
+            </div>
+          </div>
+        {% empty %}
+          <p>No trending events at the moment.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- People to Connect -->
+    <div class="people-connect glassmorphism">
+      <h3>People to Connect</h3>
+      <div class="people-list">
+        {% for user in users_to_connect|slice:":3" %}
+          <div class="person">
+            {% if user.profile.avatar %}
+              <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}'s Avatar" class="user-avatar">
+            {% else %}
+              <img src="{% static 'images/avatar.png' %}" alt="User Avatar" class="user-avatar">
+            {% endif %}
+            <div class="person-info">
+              <h4>{{ user.get_full_name|default:user.username }}</h4>
+              <span>{{ user.profile.role|default:"Member" }}</span>
+            </div>
+            <button class="connect-btn">Connect</button>
+          </div>
+        {% empty %}
+          <p>No suggestions at the moment.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+</div>
+
+<style>
+  .post-details {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  .post-details p {
+    margin: 5px 0;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-btn {
+    padding: 8px 16px;
+    margin: 0 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .current-page {
+    margin: 0 10px;
+  }
+  
+  .no-events {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.1em;
+    color: #666;
+  }
+  
+  .no-events a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .no-events a:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/global/base.js' %}"></script>
+<script src="{% static 'js/core/core.js' %}"></script>
+{% endblock scripts %}

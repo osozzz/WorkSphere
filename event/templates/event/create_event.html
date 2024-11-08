@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="background-container">
+    <img src="{% static 'images/events/BG4.jpg' %}" alt="Background Image" class="background-image">
+</div>
+
+<div class="create-event-container">
+    <div class="create-event-form glassmorphism">
+        <h2 class="create-event-title">Crear Evento</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                <div class="form-field-container">
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="form-help-text">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+                {% for error in field.errors %}
+                <p class="form-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="submit-btn">Crear Evento</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #2b1055, #7597de);
+        z-index: -2;
+    }
+
+    .background-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    .create-event-container {
+        min-height: calc(100vh - 100px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+    }
+
+    .create-event-form {
+        width: 100%;
+        max-width: 600px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .create-event-title {
+        color: #fff;
+        font-size: 28px;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        display: block;
+        color: #fff;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .form-field-container {
+        position: relative;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    input[type="file"] + label {
+        display: inline-block;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    input[type="file"] + label:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .form-help-text {
+        display: block;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        margin-top: 6px;
+    }
+
+    .form-error {
+        color: #ff6b6b;
+        font-size: 14px;
+        margin-top: 6px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background: #45a049;
+    }
+
+    @media (max-width: 768px) {
+        .create-event-form {
+            padding: 30px 20px;
+        }
+
+        .create-event-title {
+            font-size: 24px;
+        }
+    }
+</style>
+{% endblock %}
